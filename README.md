@@ -2,6 +2,7 @@
 
 A small Streamlit tool that answers about SignalDesk's AI workflows.
 
+**Live app:** https://signaldesk-health-check.streamlit.app
 ---
 
 ## Track Chosen 
@@ -22,6 +23,7 @@ cd signaldesk-health-check
 pip install -r requirements.txt
 streamlit run app.py
 ```
+**Live app:** https://signaldesk-health-check.streamlit.app
 
 
 ## Who It Is For
