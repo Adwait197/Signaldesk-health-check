@@ -42,8 +42,6 @@ sample-data/product_usage_events.csv  41 rows, 7 days. 39 survive cleaning.
   model does good work; `accepted_per_session` asks if the tool actually
   helps. Feedback clustering is 68% by one and 44% by the other, and that gap
   is the finding.
-- **Demo traffic is removed entirely, not just deduplicated.** Deleting the
-  duplicate still leaves one copy of fake usage in the averages.
 - **Missing is not zero.** A blank rating means nobody rated it, not that
   somebody gave it a zero.
 - **Rising flags are ambiguous on their own.** More flags can mean worse
@@ -60,7 +58,6 @@ sample-data/product_usage_events.csv  41 rows, 7 days. 39 survive cleaning.
   different teams.
 - **The text `n/a` in a numeric column.** pandas turns it into a null
   automatically, so the bad value disappears before anyone notices.
-- **A blank user rating**, left missing rather than filled with zero.
 - **Aug 7 has four rows instead of six.** Day totals for Aug 7 are not
   comparable, though the individual rows are fine.
 - **Aug 1 and 2 are a weekend.** The session "growth" across the week is partly
@@ -79,8 +76,6 @@ sample-data/product_usage_events.csv  41 rows, 7 days. 39 survive cleaning.
   rather than a model problem.
 - **Split the flag column in two.** A policy flag and a user flag are different
   events sharing one column, which is why Aug 7 was hard to read.
-- **Chart acceptance rate by confidence bucket.** If the line is flat,
-  confidence is decorative and should come off every dashboard.
 - **Tag every session with the prompt version that produced it.** Without it,
   "did the Aug 4 change help?" stays unanswerable. No amount of analysis fixes
   a missing column.
