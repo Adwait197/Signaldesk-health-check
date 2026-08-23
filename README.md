@@ -2,11 +2,6 @@
 
 A small Streamlit tool that answers about SignalDesk's AI workflows.
 
-```bash
-pip install -r requirements.txt
-streamlit run app.py
-```
-
 ---
 
 ## Track Chosen 
@@ -18,6 +13,16 @@ Track 1, Fictional Domain Packet.
  A Streamlit health check that flags workflows where model confidence trends up while human signals (completion, acceptance, rating, minutes saved) trend down. A second check compares the latest day against its own 3-day baseline, since a weekly trend line smooths out sudden breaks. Three tabs: flagged findings, a quarantine log of every row I changed, and what this data cannot answer.
 
 Findings: Support/Reply draft broke Aug 7, minutes saved −63%, rating −50%, flags +209%, while confidence rose to its weekly high of 0.91. Feedback clustering degrades with scale: completion 75%→58% as sessions grow 12→31. Best performer is Lead summary/email (66% accepted per session, 7% flag rate). Least trustworthy metric is median_confidence.
+
+If you want to reproduce the artifact that I built on your device. Run it:
+
+```bash
+git clone https://github.com/Adwait197/signaldesk-health-check.git
+cd signaldesk-health-check
+pip install -r requirements.txt
+streamlit run app.py
+```
+
 
 ## Who It Is For
 
