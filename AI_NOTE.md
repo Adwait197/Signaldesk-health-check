@@ -9,9 +9,9 @@ while editing. I use both most days and I did not change how I work for this.
 
 Roughly in the order it happened.
 
-I read the CSV myself first, starting with the notes column, because that is a person telling you something and most people skip it. That gave me the duplicate row, the 140-session spike, the missing confidence value, and Aug 7 having four rows where every other day had six.
+I read the CSV myself first, starting with the notes column, because that is a person telling you something. That gave me the duplicate row, the 140-session spike, the missing confidence value, and Aug 7 having four rows where every other day had six.
 
-Then I used AI as a second reader, wanting a check not looking for the same things I was. It suggested a checklist — column types, category labels, value ranges, group coverage — which I ran in code. That caught two things I missed: product written lowercase, which silently splits a groupby, and that pandas converts the text n/a to a null automatically, so the bad value vanishes before anyone sees it.
+Then I used AI as a second reader, it suggested a checklist — column types, category labels, value ranges, group coverage — which I ran in code. That caught two things I missed: product written lowercase, which silently splits a groupby, and that pandas converts the text n/a to a null automatically, so the bad value vanishes before anyone sees it.
 
 Then I argued through scope. I described what the packet ruled out and worked through options.AI then drafted the Streamlit layout and boilerplate. I decided the structure: separate cleaning, metrics and detection modules, plus a quarantine log showing every change on screen.
 
@@ -24,11 +24,7 @@ trend.
 
 ## One Prompt, Workflow, Or Moment That Helped
 
-The prompt itself was not a good one. It was posing a dull question at the
-beginning.
-
-Before analyzing anything, I made sure which weekday each date fell on. August 1
-and 2, 2026 fall on Saturday and Sunday.
+The prompt was checking the day to start off.Before analyzing anything, I made sure which weekday each date fell on. August 1 and 2, 2026 fall on Saturday and Sunday.
 
 This completely altered my approach to the entire dataset. The sessions rise
 every day and the natural conclusion would be that the use of the product is
@@ -46,8 +42,6 @@ tab in the tool.
 
 ## One Thing You Verified Or Decided Yourself
 
-Two, one of each.
-
 **Decided.** The duplicate entry on August 5 also comes from demo-account traffic.
 The natural thing would have been to remove the duplicate entry and continue. I did not believe that was good enough since the duplicate that remains is not genuine and every figure on it seems too good to be true. Both entries were therefore removed.
 
@@ -63,10 +57,7 @@ workflow raised my doubt regarding the rule rather than the workflow itself.
 
 When I checked the figures which corresponded to the labels, I saw that
 signals in the Lead summary have decreased for less than 3%, which is just
-above the threshold for noise. On the other hand, signals of Support have
-decreased for 41%. They both have been labeled as Medium as the rule took
-into account the number of decreasing signals without caring much about the
-extent of the decrease. I set the minimum size of the fall for severity,
+above the threshold for noise. I set the minimum size of the fall for severity,
 and Lead summary got rightly labeled as Watch.
 
 I am including this because it is the kind of thing that is easy to miss. The
