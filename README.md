@@ -81,7 +81,7 @@ sample-data/product_usage_events.csv  41 rows, 7 days. 39 survive cleaning.
   events sharing one column, which is why Aug 7 was hard to read.
 - **Chart acceptance rate by confidence bucket.** If the line is flat,
   confidence is decorative and should come off every dashboard.
-  - **Tag every session with the prompt version that produced it.** Without it,
+- **Tag every session with the prompt version that produced it.** Without it,
   "did the Aug 4 change help?" stays unanswerable. No amount of analysis fixes
   a missing column.
 
