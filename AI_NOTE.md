@@ -2,27 +2,18 @@
 
 ## Did You Use AI?
 
-Yes, heavily, from start to finish. Mostly Claude, plus Copilot for autocomplete
+Yes, from start to finish. Mostly Claude, plus Copilot for autocomplete
 while editing. I use both most days and I did not change how I work for this.
 
 ## How You Used It
 
 Roughly in the order it happened.
 
-I started by reading the packet and the CSV myself. 41 rows is small enough to
-read line by line, so I did that first, and then went through it again with AI
-help as a second pass. I wanted a check that was not looking for the same
-things I was.
+I read the CSV myself first, starting with the notes column, because that is a person telling you something and most people skip it. That gave me the duplicate row, the 140-session spike, the missing confidence value, and Aug 7 having four rows where every other day had six.
 
-Then I argued through scope. I described what the packet ruled out (not a big
-BI project, do not trust confidence, one small artifact) and worked through
-options. Two got thrown out for being too broad: a full comparison dashboard
-across all workflows, and a metric dictionary with no actual analysis behind
-it.
+Then I used AI as a second reader, wanting a check not looking for the same things I was. It suggested a checklist — column types, category labels, value ranges, group coverage — which I ran in code. That caught two things I missed: product written lowercase, which silently splits a groupby, and that pandas converts the text n/a to a null automatically, so the bad value vanishes before anyone sees it.
 
-For the build, AI wrote most of the first draft of the Streamlit layout and the
-boilerplate in the three modules. That is the part I type slowest and care
-about least.
+Then I argued through scope. I described what the packet ruled out and worked through options.AI then drafted the Streamlit layout and boilerplate. I decided the structure: separate cleaning, metrics and detection modules, plus a quarantine log showing every change on screen.
 
 I also used it as a sounding board on the detector design. I went back and
 forth on whether to compare the first day to the last day, or fit a line
@@ -31,55 +22,52 @@ Saturday and the last day is the policy change day, so comparing those two
 endpoints would have let the two strangest days in the file define the entire
 trend.
 
-Where I did not use it: deciding what to build, deciding what to do with the
-demo rows, and the date check below.
-
 ## One Prompt, Workflow, Or Moment That Helped
 
-It was not a clever prompt. It was asking a boring question early.
+The prompt itself was not a good one. It was posing a dull question at the
+beginning.
 
-Before doing any analysis I checked what day of the week each date actually
-fell on. August 1 and 2, 2026 are a Saturday and a Sunday.
+Before analyzing anything, I made sure which weekday each date fell on. August 1
+and 2, 2026 fall on Saturday and Sunday.
 
-That changed how I read the whole file. Sessions climb steadily across the week
-and the obvious conclusion is that adoption is growing, or that the August 4
-prompt change worked. A good part of that climb is just the working week
-starting. And because the prompt change lands on the 4th, the before window
-contains a weekend, so any before and after comparison is partly measuring the
-calendar rather than the prompt.
+This completely altered my approach to the entire dataset. The sessions rise
+every day and the natural conclusion would be that the use of the product is
+growing, or the prompt change on August 4 took effect. Part of that growth is
+simply due to the fact that a new working week starts. As well, since the prompt
+change happens on the 4th, the 'before' time frame includes weekends, thus,
+when comparing 'before' and 'after', part of the analysis reflects the calendar
+and not the prompt.
 
-Nothing in the packet points at this and the notes column does not mention it.
-It came from a habit of checking what a date column literally is before
-drawing a trend on top of it. It is now the first thing in the tool's "what
-this data cannot answer" tab.
+There is no information about this in the packet itself and the notes column
+does not contain any clues about this either. This is the result of the
+habit of figuring out what a date column really means before drawing a trend
+on top of it. It became the first item in the "What this data cannot answer"
+tab in the tool.
 
 ## One Thing You Verified Or Decided Yourself
 
 Two, one of each.
 
-**Decided.** The duplicated row on August 5 is also demo-account traffic. The
-obvious move is to delete the duplicate and carry on. I decided that was not
-enough, because the copy that survives is still not real usage, and every
-number on it is suspiciously perfect. I removed both.
+**Decided.** The duplicate entry on August 5 also comes from demo-account traffic.
+The natural thing would have been to remove the duplicate entry and continue. I did not believe that was good enough since the duplicate that remains is not genuine and every figure on it seems too good to be true. Both entries were therefore removed.
 
-That decision costs something. August 5 ends up with no Sales/email row at all,
-so that day is incomplete. I chose the visible gap over the flattering number,
-and made the tool announce the gap on screen rather than quietly having one.
+This is a cost. There will now be no Sales/email entry for August 5 making it an incomplete day. I opted for the gap rather than the inflated figure and ensured the tool made this fact known through the interface.
 
-**Verified, and found the code was wrong.** The detector ranks each workflow by
-severity. It came back with Lead summary marked Medium, the same tier as
-workflows that were genuinely falling apart.
+**Verified, and found the code was wrong.** The detector rates workflows according to
+the severity level. Lead summary has been rated Medium, which is the same
+category as workflows which were failing.
 
-That did not sit right with me. Lead summary was the best performer in the
-whole dataset by every measure I had looked at, so seeing it in the same
-bracket as Support made me suspicious of the rule rather than the workflow.
+This is where I felt uneasy. Lead summary was the most efficient workflow among
+all in the dataset; therefore, it being on the same category with Support
+workflow raised my doubt regarding the rule rather than the workflow itself.
 
-When I printed the actual numbers behind the labels, Lead summary's signals had
-fallen by less than 3%, barely above the noise threshold. Support's had fallen
-by 41%. Both were labelled Medium because the rule counted how many signals
-were falling and paid almost no attention to how far. I added a minimum size
-before a fall counts toward severity, and Lead summary correctly dropped to
-Watch.
+When I checked the figures which corresponded to the labels, I saw that
+signals in the Lead summary have decreased for less than 3%, which is just
+above the threshold for noise. On the other hand, signals of Support have
+decreased for 41%. They both have been labeled as Medium as the rule took
+into account the number of decreasing signals without caring much about the
+extent of the decrease. I set the minimum size of the fall for severity,
+and Lead summary got rightly labeled as Watch.
 
 I am including this because it is the kind of thing that is easy to miss. The
 code ran, the output looked reasonable, and nothing failed. It was only wrong

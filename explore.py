@@ -1,3 +1,6 @@
+# Scratch file used to explore the raw data and find issues before building
+# the app. Kept as a record of how each data problem was found.
+
 ''' import pandas as pd
 
 df = pd.read_csv("sample-data/product_usage_events.csv")
